@@ -30,11 +30,11 @@ class MediafireLinkController extends Controller
 public function index()
 {
     $mediafireLinks = MediafireLink::with(['user' => function($query) {
-            $query->select('id', 'name');
+            $query->select('id', 'name', 'nickname');
         }])
         ->withCount('likes') 
         ->orderBy('likes_count', 'desc')
-        ->take(20)
+        ->take(50)
         ->get()
         ->transform(function($link) {
             $link->is_liked_by_user = $link->likes()->where('user_id', Auth::id())->exists();
