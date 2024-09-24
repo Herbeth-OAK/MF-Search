@@ -30,7 +30,7 @@ class MediafireLinkController extends Controller
 public function index()
 {
     $mediafireLinks = MediafireLink::with(['user' => function($query) {
-            $query->select('id', 'name', 'nickname');
+            $query->select('id', 'name', 'nickname', 'image_url');
         }])
         ->withCount('likes') 
         ->orderBy('likes_count', 'desc')
@@ -43,7 +43,6 @@ public function index()
 
     return response()->json(['links' => $mediafireLinks], 200);
 }
-
 
 public function show($id)
 {

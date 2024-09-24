@@ -31,6 +31,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('links/{id}/like', [App\Http\Controllers\MediafireLinkController::class, 'like']);
     Route::get('/profile', [App\Http\Controllers\UserController::class, 'profile']);
     Route::get('/profile/{id}', [App\Http\Controllers\UserController::class, 'show']);
+    Route::post('/links/search', [App\Http\Controllers\LinkSearchController::class, 'search']);
     
 });
 
