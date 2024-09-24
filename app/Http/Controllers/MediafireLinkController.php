@@ -30,19 +30,26 @@ class MediafireLinkController extends Controller
 public function index()
 {
     $mediafireLinks = MediafireLink::with(['user' => function($query) {
-            $query->select('id', 'name', 'nickname', 'image_url');
+            $query->select('id', 'name', 'nickname', 'image');
         }])
         ->withCount('likes') 
         ->orderBy('likes_count', 'desc')
         ->take(50)
         ->get()
         ->transform(function($link) {
+            // Verifica se o campo `image` do usuário precisa ser convertido
+            if ($link->user && is_resource($link->user->image)) {
+                $link->user->image = (stream_get_contents($link->user->image));
+            }
+
+            // Checa se o usuário deu like no link
             $link->is_liked_by_user = $link->likes()->where('user_id', Auth::id())->exists();
             return $link;
         });
 
     return response()->json(['links' => $mediafireLinks], 200);
 }
+
 
 public function show($id)
 {

@@ -31,6 +31,11 @@ class UserController extends Controller
             return response()->json(['message' => 'Usuário não encontrado'], 404);
         }
     
+        // Converte a imagem do usuário para base64 se for um recurso
+        if (is_resource($user->image)) {
+            $user->image = (stream_get_contents($user->image));
+        }
+    
         // Adiciona o atributo is_liked_by_user a cada MediafireLink
         $user->mediafireLinks->transform(function($link) {
             $link->is_liked_by_user = $link->likes()->where('user_id', Auth::id())->exists();
@@ -46,5 +51,6 @@ class UserController extends Controller
             'stats' => $stats ? $stats : 'sem stats'
         ]);
     }
+    
     
 }
