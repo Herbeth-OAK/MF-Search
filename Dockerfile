@@ -40,6 +40,11 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 # Cria o diretório de logs e define permissões
 RUN mkdir -p /var/log/nginx && chown -R www-data:www-data /var/log/nginx
 
+# Cria o diretório de uploads e ajusta as permissões
+RUN mkdir -p /var/www/html/public/uploads/users \
+    && chown -R www-data:www-data /var/www/html/public/uploads/users \
+    && chmod -R 775 /var/www/html/public/uploads/users
+
 # Expõe a porta 80 para o Nginx
 EXPOSE 80
 
